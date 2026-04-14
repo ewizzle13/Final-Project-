@@ -33,7 +33,6 @@ The dataset includes the following classes:
 
 ### 1. Data Loading
 
-* Selected **parquet** format for efficient processing
 * Combined multiple files into a single dataset using `pandas`
 
 ### 2. Data Cleaning
@@ -42,7 +41,7 @@ The dataset includes the following classes:
 * Removed irrelevant or incorrect class:
 
   * **Heartbleed** (not a DoS attack)
-* Handled missing or inconsistent values (if applicable)
+* Handled missing or inconsistent values 
 
 ### 3. Feature Preparation
 
@@ -67,12 +66,12 @@ Build a classifier to distinguish:
 ### Steps
 
 * Train-test split of dataset
-* Feature scaling (if required)
+* Feature scaling (StanderScale)
 * Model training using multiple algorithms:
 
   * Logistic Regression
   * Decision Tree
-  * Random Forest
+  * Random Forest - Eniya Madden
 
 ### Evaluation Metrics
 
@@ -104,7 +103,7 @@ Special emphasis is placed on:
 ├── finalproject.ipynb        # Main notebook (data processing + modeling)
 ├── README.md                # Project documentation
 ├── final_project_data_sp2026_L/
-│   ├── ids_*.parquet  # Dataset files
+│   ├── ids_*.csv/Json/parquet  # Dataset files
 ```
 
 ---
