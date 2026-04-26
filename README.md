@@ -38,10 +38,11 @@ The dataset includes the following classes:
 ### 2. Data Cleaning
 
 * Standardized column names (removed extra whitespace)
-* Removed irrelevant or incorrect class:
+* Removed duplicate rows
+* Removed irrelevant class:
 
   * **Heartbleed** (not a DoS attack)
-* Handled missing or inconsistent values 
+* Handled missing values by replacing with **median values from the training data**
 
 ### 3. Feature Preparation
 
@@ -52,9 +53,14 @@ The dataset includes the following classes:
   * `BENIGN` → `benign`
   * All DoS attacks → `attack`
 
+### 4. Outlier Handling
+
+* Applied **IQR-based outlier detection** on numeric features
+* Replaced extreme values with the **median (training data only)** to reduce noise and prevent data leakage
+
 ---
 
-##  Machine Learning Approach
+## Machine Learning Approach
 
 ### Objective
 
@@ -65,15 +71,19 @@ Build a classifier to distinguish:
 
 ### Steps
 
-* Train-test split of dataset
-* Feature scaling (StanderScale)
+* Train-test split of dataset (80/20 with stratification)
+* Outlier handling applied **only to training data**
+* Missing value imputation using **training median**
+* Feature scaling using `StandardScaler`
 * Model training using multiple algorithms:
 
-  * Logistic Regression
-  * Decision Tree
+  * Logistic Regression - Leilani Rivera
+  * Perceptron (baseline linear model) - Niurika Gonzalez
   * Random Forest - Eniya Madden
 
-### Evaluation Metrics
+---
+
+## Evaluation Metrics
 
 Models are evaluated using:
 
@@ -87,40 +97,58 @@ Models are evaluated using:
 
 ## Results
 
-The performance of each model is compared to determine the most effective classifier for intrusion detection.
+| Model               | Accuracy | Precision | Recall | F1 Score |
+| ------------------- | -------- | --------- | ------ | -------- |
+| Random Forest       | **0.99** | 0.99      | 0.999  | 0.99     |
+| Logistic Regression | 0.84     | 0.90      | 0.92   | 0.91     |
+| Perceptron          | TBD      | TBD       | TBD    | TBD      |
 
-Special emphasis is placed on:
+### Key Observations
 
-* **Recall** (detecting attacks)
-* **Precision** (reducing false positives)
+* **Random Forest achieved the highest performance (~99% accuracy)** due to its ability to capture complex, non-linear relationships in network traffic data.
+* **Logistic Regression (~84% accuracy)** performed well but is limited by its assumption of linear separability.
+* **Perceptron (accuracy)** 
+* The difference in performance highlights the importance of model selection for cybersecurity datasets.
+* Recall is especially important in this task, as missing an attack (false negative) can be critical.
 
 ---
 
 ## Project Structure
 
-```
-.
-├── finalproject.ipynb        # Main notebook (data processing + modeling)
-├── README.md                # Project documentation
-├── final_project_data_sp2026_L/
-│   ├── ids_*.csv/Json/parquet  # Dataset files
+```plaintext
+Final-Project-/
+│
+├── data/
+│   └── final_project_data_sp2026_L/
+│
+├── notebooks/
+│   ├── random_forest.ipynb
+│   ├── logistic_regression.ipynb
+│   └── perceptron.ipynb
+│
+├── results/
+│   ├── plots/
+│   └── metrics/
+│
+├── README.md
 ```
 
 ---
 
 ## Key Takeaways
 
-* Data preprocessing is critical for cybersecurity datasets
-* Binary classification simplifies intrusion detection tasks
-* Model selection impacts detection accuracy and reliability
-* Avoiding data duplication ensures valid model performance
+* Consistent preprocessing across models is critical for fair comparison
+* Applying transformations only to training data prevents data leakage
+* Tree-based models perform best on complex intrusion detection data
+* Linear models provide useful baselines but may struggle with non-linear patterns
 
 ---
 
 ## Notes
 
-* Only one data format Parquet is used to increase runtime complexity
 * The project focuses specifically on **Wednesday traffic (DoS attacks)**
+* Only one data format is used to avoid duplication
+* Emphasis was placed on maintaining a **clean and consistent ML pipeline**
 
 ---
 
@@ -129,5 +157,3 @@ Special emphasis is placed on:
 * E'niya Madden
 * Leilani Rivera
 * Niurika Gonzalez
-
----
